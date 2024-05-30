@@ -5,8 +5,6 @@ namespace StorageProject
 {
     public partial class HomeForm : Form
     {
-        const string connection_string = "Data Source=.;Initial Catalog=Storage;Integrated Security=True;Trust Server Certificate=True";
-        SqlConnection con = new SqlConnection(connection_string);
 
         Dictionary<int, int> id_amount = new Dictionary<int, int>();
 
@@ -14,11 +12,11 @@ namespace StorageProject
         public SqlDataReader execute_queries(string query)
         {
 
-            SqlCommand com = new SqlCommand(query, con);
+            SqlCommand com = new SqlCommand(query, UserCredits.con);
 
             try
             {
-                con.Open();
+                UserCredits.con.Open();
                 com.ExecuteNonQuery();
                 return com.ExecuteReader();
             }
@@ -52,7 +50,7 @@ namespace StorageProject
                 dataGridView1.Rows.Add(row);
             }
             dataGridView1.AllowUserToAddRows = false;
-            con.Close();
+            UserCredits.con.Close();
         }
 
 

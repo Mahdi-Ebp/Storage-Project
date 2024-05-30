@@ -18,31 +18,10 @@ namespace StorageProject
 
         string error_message = "";
 
-        const string connection_string = "Data Source=.;Initial Catalog=Storage;Integrated Security=True;Trust Server Certificate=True";
-        SqlConnection con = new SqlConnection(connection_string);
-
-
-        public SqlDataReader execute_queries(string query)
-        {
-            SqlCommand com = new SqlCommand(query, con);
-
-            try
-            {
-                con.Open();
-                com.ExecuteNonQuery();
-                return com.ExecuteReader();
-            }
-
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-                return null;
-            }
-        }
 
         bool IsNameValid(string name)
         {
-            Regex reg = new Regex("^[ا-ی]+$");
+            Regex reg = new Regex("^[آ-ی ]+$");
             if (reg.Match(name).Success)
                 return true;
             else
@@ -126,17 +105,26 @@ namespace StorageProject
                 values ('{name}', '{address}', '{number}', '{email}', '{password}')
                 """;
 
-            execute_queries(query);
-            con.Close();
+           UserCredits.execute_queries(query);
+           UserCredits.con.Close();
         }
 
-        bool UserExists(string phone_number, string email) {
+        bool UserDoesNotExist(string phone_number, string email) {
 
             string query = $"""select * from customer where phone_number='{phone_number}' or email='{email}'""";
             
-            SqlDataReader reader = execute_queries(query);
-            bool b = reader == null ? false : true;
-            con.Close();
+            SqlDataReader reader = UserCredits.execute_queries(query);
+
+            bool b;
+            if (reader.HasRows)
+            {
+                error_message += "این شماره تلفن یا ایمیل قبلا ثبت شده است.";
+                b = false;
+            }
+            else
+                b = true;
+
+            UserCredits.con.Close();
             return b;
         }
 
@@ -144,9 +132,8 @@ namespace StorageProject
         {
             error_message = "";
             if (IsNameValid(textBox1.Text) && IsNumberValid(textBox2.Text) && IsEmailValid(textBox3.Text)
-                && IsPasswordvalid(textBox5.Text, textBox6.Text))
+                && IsPasswordvalid(textBox5.Text, textBox6.Text) && UserDoesNotExist(textBox2.Text, textBox3.Text))
             {
-                
                 InsertNewCustomer(textBox1.Text, textBox4.Text, textBox2.Text, textBox3.Text, textBox5.Text);
             }
             else

@@ -44,6 +44,7 @@
             button1.TabIndex = 0;
             button1.Text = "ورود";
             button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
             // 
             // label1
             // 
@@ -51,9 +52,9 @@
             label1.Location = new Point(484, 57);
             label1.Name = "label1";
             label1.RightToLeft = RightToLeft.Yes;
-            label1.Size = new Size(148, 41);
+            label1.Size = new Size(264, 41);
             label1.TabIndex = 1;
-            label1.Text = "نام کاربری:";
+            label1.Text = "ایمیل یا شماره تلفن:";
             // 
             // label2
             // 
@@ -95,7 +96,7 @@
             // 
             AutoScaleDimensions = new SizeF(17F, 41F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(692, 349);
+            ClientSize = new Size(776, 349);
             Controls.Add(linkLabel1);
             Controls.Add(textBox2);
             Controls.Add(textBox1);
