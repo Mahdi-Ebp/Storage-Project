@@ -31,22 +31,51 @@ namespace StorageProject
 
         private void button1_Click(object sender, EventArgs e)
         {
-            string query = $"select password, customer_id from customer" +
-                $"where phone_number='{textBox1.Text}' or email='{textBox1.Text}'";
-
-            SqlDataReader reader = UserCredits.execute_queries(query);
-
-            if (reader.HasRows == false)
-                MessageBox.Show("چنین کاربری وجود ندارد.");
-            else if (reader["password"].ToString() != textBox2.Text)
-                MessageBox.Show("نام کاربری یا رمز عبور اشتباه است.");
-            else
+            if (textBox1.Text == "admin" && textBox2.Text == "admin")
             {
-                UserCredits.user_id = int.Parse(reader["customer_id"].ToString());
-                UserCredits.is_logged_in = true;
+                this.Hide();
+
+                AdminForm adminForm = new AdminForm();
+                adminForm.ShowDialog();
             }
 
-            this.Close();
+            else
+            {
+                try
+                {
+                    string query = $"select password, customer_id, customer_name from customer where phone_number='{textBox1.Text}' or email='{textBox1.Text}'";
+
+                    SqlDataReader reader = UserCredits.execute_queries(query);
+
+                    if (!reader.HasRows)
+                        MessageBox.Show("چنین کاربری وجود ندارد.");
+                    else
+                    {
+                        reader.Read();
+
+                        if (reader["password"].ToString() != textBox2.Text)
+                            MessageBox.Show("نام کاربری یا رمز عبور اشتباه است.");
+
+                        else
+                        {
+                            UserCredits.user_id = int.Parse(reader["customer_id"].ToString());
+                            UserCredits.user_name = reader["customer_name"].ToString();
+                            UserCredits.is_logged_in = true;
+
+                            this.Close();
+                        }
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+                finally
+                {
+                    UserCredits.con.Close();
+                }
+            }
         }
     }
 }

@@ -10,6 +10,7 @@ namespace StorageProject
     static class UserCredits
     {
         static public int user_id;
+        static public string user_name;
         static public bool is_logged_in = false;
 
         static readonly string connection_string = "Data Source=.;Initial Catalog=Storage;Integrated Security=True;Trust Server Certificate=True";

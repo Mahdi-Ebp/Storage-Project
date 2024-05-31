@@ -44,12 +44,15 @@
             linkLabel2 = new LinkLabel();
             button3 = new Button();
             numericUpDown1 = new NumericUpDown();
+            linkLabel3 = new LinkLabel();
+            label2 = new Label();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
             SuspendLayout();
             // 
             // dataGridView1
             // 
+            dataGridView1.AllowUserToAddRows = false;
             dataGridView1.AllowUserToDeleteRows = false;
             dataGridView1.AllowUserToOrderColumns = true;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -201,6 +204,7 @@
             button3.TabIndex = 8;
             button3.Text = "تکمیل سفارش";
             button3.UseVisualStyleBackColor = true;
+            button3.Click += button3_Click;
             // 
             // numericUpDown1
             // 
@@ -210,12 +214,40 @@
             numericUpDown1.TabIndex = 9;
             numericUpDown1.ValueChanged += numericUpDown1_ValueChanged;
             // 
+            // linkLabel3
+            // 
+            linkLabel3.AutoSize = true;
+            linkLabel3.Font = new Font("Segoe UI", 12F);
+            linkLabel3.Location = new Point(40, 32);
+            linkLabel3.Name = "linkLabel3";
+            linkLabel3.Size = new Size(106, 54);
+            linkLabel3.TabIndex = 10;
+            linkLabel3.TabStop = true;
+            linkLabel3.Text = "خروج";
+            linkLabel3.Visible = false;
+            linkLabel3.LinkClicked += linkLabel3_LinkClicked;
+            // 
+            // label2
+            // 
+            label2.Anchor = AnchorStyles.Right;
+            label2.Font = new Font("Segoe UI", 12F);
+            label2.Location = new Point(152, 32);
+            label2.Name = "label2";
+            label2.RightToLeft = RightToLeft.Yes;
+            label2.Size = new Size(425, 54);
+            label2.TabIndex = 11;
+            label2.Text = "نام کاربر";
+            label2.TextAlign = ContentAlignment.MiddleLeft;
+            label2.Visible = false;
+            // 
             // HomeForm
             // 
             AutoScaleDimensions = new SizeF(17F, 41F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ControlLight;
             ClientSize = new Size(1789, 1080);
+            Controls.Add(label2);
+            Controls.Add(linkLabel3);
             Controls.Add(numericUpDown1);
             Controls.Add(button3);
             Controls.Add(linkLabel2);
@@ -226,8 +258,10 @@
             Controls.Add(richTextBox1);
             Controls.Add(dataGridView1);
             FormBorderStyle = FormBorderStyle.FixedDialog;
+            MaximizeBox = false;
             Name = "HomeForm";
             Text = "صفحه اصلی";
+            Activated += HomeForm_Activated;
             Load += Form1_Load;
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).EndInit();
@@ -253,5 +287,7 @@
         private NumericUpDown numericUpDown1;
         private DataGridViewTextBoxColumn Column6;
         private DataGridViewTextBoxColumn Column7;
+        private LinkLabel linkLabel3;
+        private Label label2;
     }
 }

@@ -103,10 +103,17 @@ namespace StorageProject
             string query = $"""
                 insert into customer (customer_name, address, phone_number, email, password)
                 values ('{name}', '{address}', '{number}', '{email}', '{password}')
+
+                select scope_identity() as last_id
                 """;
 
-           UserCredits.execute_queries(query);
-           UserCredits.con.Close();
+            SqlDataReader reader = UserCredits.execute_queries(query);
+            reader.Read();
+
+            UserCredits.user_id = int.Parse(reader["last_id"].ToString());
+            UserCredits.user_name = name;
+            UserCredits.is_logged_in = true;
+            UserCredits.con.Close();
         }
 
         bool UserDoesNotExist(string phone_number, string email) {
@@ -135,6 +142,8 @@ namespace StorageProject
                 && IsPasswordvalid(textBox5.Text, textBox6.Text) && UserDoesNotExist(textBox2.Text, textBox3.Text))
             {
                 InsertNewCustomer(textBox1.Text, textBox4.Text, textBox2.Text, textBox3.Text, textBox5.Text);
+                MessageBox.Show("ثبت نام با موفقیت انجام شد");
+                this.Close();
             }
             else
                 MessageBox.Show(error_message, "خطا", MessageBoxButtons.OK,

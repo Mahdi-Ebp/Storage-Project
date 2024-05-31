@@ -32,6 +32,7 @@
             Column1 = new DataGridViewTextBoxColumn();
             Column2 = new DataGridViewTextBoxColumn();
             Column3 = new DataGridViewTextBoxColumn();
+            Column4 = new DataGridViewTextBoxColumn();
             button1 = new Button();
             label1 = new Label();
             label2 = new Label();
@@ -43,10 +44,13 @@
             // 
             // dataGridView1
             // 
+            dataGridView1.AllowUserToAddRows = false;
+            dataGridView1.AllowUserToDeleteRows = false;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { Column1, Column2, Column3 });
+            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { Column1, Column2, Column3, Column4 });
             dataGridView1.Location = new Point(38, 122);
             dataGridView1.Name = "dataGridView1";
+            dataGridView1.ReadOnly = true;
             dataGridView1.RightToLeft = RightToLeft.Yes;
             dataGridView1.RowHeadersWidth = 102;
             dataGridView1.Size = new Size(853, 823);
@@ -54,24 +58,39 @@
             // 
             // Column1
             // 
+            Column1.FillWeight = 106.809067F;
             Column1.HeaderText = "نام محصول";
             Column1.MinimumWidth = 12;
             Column1.Name = "Column1";
+            Column1.ReadOnly = true;
             Column1.Width = 250;
             // 
             // Column2
             // 
+            Column2.FillWeight = 116.528F;
             Column2.HeaderText = "قیمت واحد";
             Column2.MinimumWidth = 12;
             Column2.Name = "Column2";
-            Column2.Width = 250;
+            Column2.ReadOnly = true;
+            Column2.Width = 125;
             // 
             // Column3
             // 
-            Column3.HeaderText = "تعداد";
+            Column3.FillWeight = 75.39473F;
+            Column3.HeaderText = "فی";
             Column3.MinimumWidth = 12;
             Column3.Name = "Column3";
-            Column3.Width = 250;
+            Column3.ReadOnly = true;
+            Column3.Width = 125;
+            // 
+            // Column4
+            // 
+            Column4.FillWeight = 101.268188F;
+            Column4.HeaderText = "مبلغ";
+            Column4.MinimumWidth = 12;
+            Column4.Name = "Column4";
+            Column4.ReadOnly = true;
+            Column4.Width = 250;
             // 
             // button1
             // 
@@ -81,6 +100,7 @@
             button1.TabIndex = 1;
             button1.Text = "انصراف";
             button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
             // 
             // label1
             // 
@@ -95,11 +115,10 @@
             // label2
             // 
             label2.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            label2.AutoSize = true;
-            label2.Location = new Point(621, 47);
+            label2.Location = new Point(38, 47);
             label2.Name = "label2";
             label2.RightToLeft = RightToLeft.Yes;
-            label2.Size = new Size(159, 41);
+            label2.Size = new Size(742, 41);
             label2.TabIndex = 3;
             label2.Text = "تعیین نشده";
             // 
@@ -130,6 +149,7 @@
             button2.TabIndex = 6;
             button2.Text = "ثبت سفارش";
             button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
             // 
             // CartForm
             // 
@@ -143,8 +163,11 @@
             Controls.Add(label1);
             Controls.Add(button1);
             Controls.Add(dataGridView1);
+            MaximizeBox = false;
             Name = "CartForm";
             Text = "سبد خرید";
+            Activated += CartForm_Activated;
+            Load += CartForm_Load;
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -153,14 +176,15 @@
         #endregion
 
         private DataGridView dataGridView1;
-        private DataGridViewTextBoxColumn Column1;
-        private DataGridViewTextBoxColumn Column2;
-        private DataGridViewTextBoxColumn Column3;
         private Button button1;
         private Label label1;
         private Label label2;
         private Label label3;
         private Label label4;
         private Button button2;
+        private DataGridViewTextBoxColumn Column1;
+        private DataGridViewTextBoxColumn Column2;
+        private DataGridViewTextBoxColumn Column3;
+        private DataGridViewTextBoxColumn Column4;
     }
 }

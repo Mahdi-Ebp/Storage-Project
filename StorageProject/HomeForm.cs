@@ -1,4 +1,4 @@
-using Microsoft.Data.SqlClient;
+﻿using Microsoft.Data.SqlClient;
 using System.Data.SqlClient;
 
 namespace StorageProject
@@ -9,34 +9,16 @@ namespace StorageProject
         Dictionary<int, int> id_amount = new Dictionary<int, int>();
 
 
-        public SqlDataReader execute_queries(string query)
-        {
-
-            SqlCommand com = new SqlCommand(query, UserCredits.con);
-
-            try
-            {
-                UserCredits.con.Open();
-                com.ExecuteNonQuery();
-                return com.ExecuteReader();
-            }
-
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-                return null;
-            }
-        }
-
-
         public void fill_datagridview()
         {
+            dataGridView1.AllowUserToAddRows = true;
+
             string query = """
                 select * from product
                 """;
 
 
-            SqlDataReader reader = execute_queries(query);
+            SqlDataReader reader = UserCredits.execute_queries(query);
             while (reader.Read())
             {
                 DataGridViewRow row = (DataGridViewRow)dataGridView1.Rows[0].Clone();
@@ -104,6 +86,7 @@ namespace StorageProject
             dataGridView1.CurrentRow.Cells[6].Value = numericUpDown1.Value.ToString();
         }
 
+
         private void button2_Click(object sender, EventArgs e)
         {
             if (numericUpDown1.Value > 0)
@@ -111,6 +94,55 @@ namespace StorageProject
                 numericUpDown1.Value--;
                 dataGridView1.CurrentRow.Cells[6].Value = numericUpDown1.Value.ToString();
             }
+        }
+
+
+        private void HomeForm_Activated(object sender, EventArgs e)
+        {
+            if (UserCredits.is_logged_in)
+            {
+                linkLabel1.Visible = false;
+                linkLabel2.Visible = false;
+
+                label2.Visible = true;
+                linkLabel3.Visible = true;
+                label2.Text = UserCredits.user_name;
+
+                dataGridView1.Rows.Clear();
+                dataGridView1.Refresh();
+                fill_datagridview();
+            }
+        }
+
+        private void linkLabel3_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            linkLabel1.Visible = true;
+            linkLabel2.Visible = true;
+
+            label2.Visible = false;
+            linkLabel3.Visible = false;
+
+            UserCredits.is_logged_in = false;
+            UserCredits.user_name = "";
+            UserCredits.user_id = 0;
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            id_amount.Clear();
+            for (int i = 0; i < dataGridView1.RowCount; i++)
+            {
+                if (dataGridView1.Rows[i].Cells[6].Value.ToString() != "0")
+                    id_amount.Add(int.Parse(dataGridView1.Rows[i].Cells[5].Value.ToString()), int.Parse(dataGridView1.Rows[i].Cells[6].Value.ToString()));
+            }
+
+            if (id_amount.Count > 0)
+            {
+                CartForm cart_form = new CartForm(id_amount);
+                cart_form.ShowDialog();
+            }
+            else
+                MessageBox.Show("سبد خرید خالی است. لطفا ابتدا محصولات دلخواه را به سبد خرید اضافه کنید.");
         }
     }
 }

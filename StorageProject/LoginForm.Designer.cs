@@ -77,6 +77,7 @@
             // 
             textBox2.Location = new Point(104, 137);
             textBox2.Name = "textBox2";
+            textBox2.PasswordChar = '*';
             textBox2.Size = new Size(336, 47);
             textBox2.TabIndex = 4;
             // 
@@ -104,6 +105,7 @@
             Controls.Add(label1);
             Controls.Add(button1);
             FormBorderStyle = FormBorderStyle.FixedDialog;
+            MaximizeBox = false;
             Name = "LoginForm";
             Text = "ورود خریدار";
             ResumeLayout(false);
