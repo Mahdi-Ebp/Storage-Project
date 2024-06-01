@@ -13,6 +13,9 @@ namespace StorageProject
 {
     public partial class AdminForm : Form
     {
+        int last_row_index = 0;
+
+
         public AdminForm()
         {
             InitializeComponent();
@@ -41,6 +44,7 @@ namespace StorageProject
                 dataGridView1.Rows.Add(row);
             }
 
+            last_row_index = dataGridView1.RowCount - 1;
             UserCredits.con.Close();
         }
 
@@ -72,14 +76,15 @@ namespace StorageProject
 
         private void dataGridView1_SelectionChanged(object sender, EventArgs e)
         {
-            if (dataGridView1.Rows[dataGridView1.CurrentRow.Index].Cells[4].Value != null)
-            {
+            if (dataGridView1.Rows[dataGridView1.CurrentRow.Index].Cells[4].Value == null)
+                richTextBox1.Text = "";
+            else
                 richTextBox1.Text = dataGridView1.Rows[dataGridView1.CurrentRow.Index].Cells[4].Value.ToString();
 
-                numericUpDown1.Maximum = int.Parse(dataGridView1.CurrentRow.Cells[2].Value.ToString());
+            if (dataGridView1.CurrentRow.Cells[2].Value != null)
                 numericUpDown1.Value = int.Parse(dataGridView1.CurrentRow.Cells[2].Value.ToString());
-            }
         }
+
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
         {
@@ -97,20 +102,34 @@ namespace StorageProject
 
         private void button3_Click(object sender, EventArgs e)
         {
+            string query = "";
+
             foreach (DataGridViewRow row in dataGridView1.Rows)
             {
-                string query = $"""
-                update product
-                set 
-                    product_name = '{row.Cells[0].ToString()}',
-                    unit_price = '{row.Cells[1].ToString()}',
-                    stock = {row.Cells[2].ToString()},
-                    category = '{row.Cells[3].ToString()}',
-                    description = '{row.Cells[1].ToString()}'
-                where product_id = {row.Cells[5].ToString()}
-                """;
+                if (row.Index < last_row_index)
+                {
+                    query = $"""
+                        update product
+                        set 
+                            product_name = '{row.Cells[0].Value.ToString()}',
+                            unit_price = {row.Cells[1].Value.ToString()},
+                            stock = {row.Cells[2].Value.ToString()},
+                            category = '{row.Cells[3].Value.ToString()}',
+                            description = '{row.Cells[4].Value.ToString()}'
+                        where product_id = {row.Cells[5].Value.ToString()}
+                        """;
+                }
+                else if (row.IsNewRow == false)
+                {
+                    query = $"""
+                        insert into product (product_name, unit_price, stock, category, description)
+                        values('{row.Cells[0].Value.ToString()}', {row.Cells[1].Value.ToString()}, {row.Cells[2].Value.ToString()}, '{row.Cells[3].Value.ToString()}', '{row.Cells[4].Value.ToString()}')
+                        """;
+                }
 
-                UserCredits.execute_queries(query);
+                if (row.IsNewRow == false)
+                    UserCredits.execute_queries(query);
+
                 UserCredits.con.Close();
             }
 

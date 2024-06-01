@@ -59,7 +59,6 @@
             label2.TabIndex = 22;
             label2.Text = "پنل مدیریت";
             label2.TextAlign = ContentAlignment.MiddleLeft;
-            label2.Visible = false;
             // 
             // linkLabel3
             // 
@@ -71,7 +70,6 @@
             linkLabel3.TabIndex = 21;
             linkLabel3.TabStop = true;
             linkLabel3.Text = "خروج";
-            linkLabel3.Visible = false;
             linkLabel3.LinkClicked += linkLabel3_LinkClicked;
             // 
             // numericUpDown1
